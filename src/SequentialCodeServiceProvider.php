@@ -22,9 +22,15 @@ class SequentialCodeServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Публикация миграции
+        // Публикация миграции и конфигурации
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+            $this->publishes([
+                __DIR__.'/../database/migrations' => database_path('migrations'),
+            ], 'sequential-code-migrations');
+            $this->publishes([
+                __DIR__.'/../config/sequential-code.php' => config_path('sequential-code.php'),
+            ], 'sequential-code-config');
         }
     }
 
